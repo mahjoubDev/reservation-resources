@@ -65,7 +65,7 @@ public class Reservation implements Serializable {
 	/**
 	 * List of resources related to this reservation.
 	 */
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "resource", nullable = false)
 	private Resource resource ;
 
@@ -233,6 +233,7 @@ public class Reservation implements Serializable {
 		resourceInfo.setReference(reference);
 		resourceInfo.setDescription(description);
 		resourceInfo.setReferenceResource(this.resource!=null ?this.resource.getReference():null);
+		resourceInfo.setLoginUser(loginUser);
 		resourceInfo.setId(id);
 		return resourceInfo;
 }

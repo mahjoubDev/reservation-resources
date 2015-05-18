@@ -77,52 +77,52 @@
 
 	<dependencies>
 
-		<dependency>
-		<groupId>org.jboss.portletbridge</groupId>
-		<artifactId>portletbridge-api</artifactId>
-		<version>3.3.0.Beta2</version>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 		<groupId>org.jboss.portletbridge</groupId> -->
+<!-- 		<artifactId>portletbridge-api</artifactId> -->
+<!-- 		<version>3.3.0.Beta2</version> -->
+<!-- 		</dependency> -->
 
 
-		<dependency>
-		<groupId>org.jboss.portletbridge</groupId>
-		<artifactId>portletbridge-impl</artifactId>
-		<version>3.3.0.Beta2</version>
-		<scope>runtime</scope>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 		<groupId>org.jboss.portletbridge</groupId> -->
+<!-- 		<artifactId>portletbridge-impl</artifactId> -->
+<!-- 		<version>3.3.0.Beta2</version> -->
+<!-- 		<scope>runtime</scope> -->
+<!-- 		</dependency> -->
 
-		<dependency>
-			<groupId>org.exoplatform.social</groupId>
-			<artifactId>exo.social.component.core</artifactId>
-			<version>1.2.6</version>
-			<scope>provided</scope>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.exoplatform.social</groupId> -->
+<!-- 			<artifactId>exo.social.component.core</artifactId> -->
+<!-- 			<version>1.2.6</version> -->
+<!-- 			<scope>provided</scope> -->
+<!-- 		</dependency> -->
 
-		<dependency>
-			<groupId>org.exoplatform.ecms</groupId>
-			<artifactId>exo-ecms-core-publication</artifactId>
-			<version>2.3.4</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.exoplatform.ecms</groupId>
-			<artifactId>exo-ecms-core-services</artifactId>
-			<version>2.3.4</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.exoplatform.ecms</groupId>
-			<artifactId>exo-ecms-core-webui</artifactId>
-			<version>2.3.4</version>
-			<scope>provided</scope>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.exoplatform.ecms</groupId> -->
+<!-- 			<artifactId>exo-ecms-core-publication</artifactId> -->
+<!-- 			<version>2.3.4</version> -->
+<!-- 			<scope>provided</scope> -->
+<!-- 		</dependency> -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.exoplatform.ecms</groupId> -->
+<!-- 			<artifactId>exo-ecms-core-services</artifactId> -->
+<!-- 			<version>2.3.4</version> -->
+<!-- 			<scope>provided</scope> -->
+<!-- 		</dependency> -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.exoplatform.ecms</groupId> -->
+<!-- 			<artifactId>exo-ecms-core-webui</artifactId> -->
+<!-- 			<version>2.3.4</version> -->
+<!-- 			<scope>provided</scope> -->
+<!-- 		</dependency> -->
 
-		<dependency>
-			<groupId>org.exoplatform.social</groupId>
-			<artifactId>exo.social.component.core</artifactId>
-			<version>1.2.6</version>
-			<scope>provided</scope>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.exoplatform.social</groupId> -->
+<!-- 			<artifactId>exo.social.component.core</artifactId> -->
+<!-- 			<version>1.2.6</version> -->
+<!-- 			<scope>provided</scope> -->
+<!-- 		</dependency> -->
 
 
 		<dependency>

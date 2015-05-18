@@ -76,7 +76,7 @@ public class Resource implements Serializable {
 	/**
 	 * List of resources related to this category.
 	 */
-	@OneToMany(mappedBy = "resource",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+	@OneToMany(mappedBy = "resource",fetch=FetchType.EAGER)
 	private Set<Reservation> reservations = new HashSet<Reservation>(0);
 
 	/**

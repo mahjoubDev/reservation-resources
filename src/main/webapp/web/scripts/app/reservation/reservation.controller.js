@@ -13,7 +13,7 @@ angular.module('jhipsterApp')
         $scope.eventSources = [];
         $scope.event = {};
         $scope.account = {};
-        $scope.reservationInfo = {} ;
+        $scope.reservationInfo = {};
         Users.getCurrentUser(function (response) {
             $scope.account = response;
 
@@ -24,8 +24,6 @@ angular.module('jhipsterApp')
          *
          */
         $scope.add = function (reservationInfo) {
-            console.log('call method add reservation');
-            console.log("reservationInfo   " + JSON.stringify(reservationInfo));
 
             var promise = Reservation.add({}, reservationInfo).$promise;
             promise.then(function (data) {
@@ -34,6 +32,7 @@ angular.module('jhipsterApp')
                     $scope.reservations = Reservation.findAll();
                     $scope.showModalAdd = !$scope.showModalAdd;
                     $scope.reservationInfo = {};
+
 
                 }, function (error) {
                     console.log("there is an error " + JSON.stringify(error));
@@ -45,16 +44,18 @@ angular.module('jhipsterApp')
          *
          * @param reference
          */
-        $scope.delete = function (reference) {
+        $scope.delete = function (reservationInfo) {
 
             console.log("call delete rservation web services");
-            var promise = Reservation.delete({referenceReservation: reference}).$promise;
+            var promise = Reservation.delete({referenceReservation: reservationInfo.reference}).$promise;
             promise.then(function (data) {
                 console.log("the reservation has been deleted succesfully");
-                $scope.reservations = Reservation.findAll();
+                $scope.getReservationsByReferenceResources(reservationInfo.referenceResource);
+                $scope.showModalDelete = !$scope.showModalDelete;
 
             }, function (error) {
-                console.log("there is an error " + JSON.stringify(error));chouf
+                console.log("there is an error " + JSON.stringify(error));
+                chouf
             });
 
 
@@ -66,22 +67,14 @@ angular.module('jhipsterApp')
          */
         $scope.update = function (reservationInfo) {
 
-          //  console.log("call delete rservation web services" +JSON.stringify(reservationInfo));
-           // var reservationInfo = {} ;
-     /*       for (var i = 0; i < $scope.reservationForResource.length; i++) {
-                if (event.id === $scope.reservationForResource[i].id) {
-                    console.log("resource is :" + $scope.resources[i]) ;
-                    reservationInfo =$scope.reservationForResource[i] ;
-                    reservationInfo.dateStart = event.start_date.format("Y-m-d h:i:s") ;
-                    reservationInfo.dateEnd = event.end_date.format("Y-m-d h:i:s") ;
-                }
-            }*/
-            if(angular.isDefined(reservationInfo)) {
-                var promise = Reservation.update({referenceReservation: reservationInfo.reference},reservationInfo).$promise;
+            if (angular.isDefined(reservationInfo)) {
+                var promise = Reservation.update({referenceReservation: reservationInfo.reference}, reservationInfo).$promise;
                 promise.then(function (data) {
                     console.log("the reservation has been updatedd succesfully");
                     $scope.reservations = Reservation.findAll();
-                    $scope.reservationInfo = {} ;
+                    $scope.reservationInfo = {};
+                    $scope.getReservationsByReferenceResources(reservationInfo.referenceResource);
+                    $scope.showModalUpdate = !$scope.showModalUpdate;
 
                 }, function (error) {
                     console.log("there is an error " + JSON.stringify(error));
@@ -90,8 +83,6 @@ angular.module('jhipsterApp')
             }
 
         };
-
-
 
 
         /**
@@ -106,30 +97,27 @@ angular.module('jhipsterApp')
         $scope.toggleModalUpdate = function () {
             $scope.showModalUpdate = !$scope.showModalUpdate;
         };
-
         /**
          *
          */
-        $scope.saveEvent = function () {
-
-            console.log("even has been added ")
+        $scope.toggleModalDelete = function () {
+            $scope.showModalUpdate = !$scope.showModalUpdate;
+            $scope.showModalDelete = !$scope.showModalDelete;
         };
+
 
         /**
          *
          * @param referenceCategory
          */
         $scope.getResourceByReferenceCategory = function (referenceCategory) {
-            console.log("hello this ctagory " + referenceCategory);
             var resources = [];
             for (var i = 0; i < $scope.resources.length; i++) {
                 if (referenceCategory === $scope.resources[i].referenceCategory) {
-                    console.log("resource is :" + $scope.resources[i])
 
                     resources.push($scope.resources[i]);
                 }
             }
-            console.log("length is " + $scope.resourcesByCategory);
             if (resources.length !== 0) {
                 $scope.resourcesByCategory = resources;
                 $scope.showResourceRelatedToCtagory = true;
@@ -150,34 +138,35 @@ angular.module('jhipsterApp')
         $scope.getReservationsByReferenceResources = function (referenceResource) {
             console.log('call method get reservation by reference resource');
             $scope.eventsResourceRelatedToResource = false;
+            $scope.events = [];
             //  console.log('the sue '+Principal.isInRole('users')) ;
             var promise = Reservation.findByResource({referenceResource: referenceResource}).$promise;
             promise.then(function (data) {
-                    console.log('reservation getted ' +JSON.stringify(data));
-                    $scope.reservationForResource = data ;
-                    // this.convertReservationsToEvents(data);
-                    for (var i = 0; i < $scope.reservations.length; i++) {
-                        var res = $scope.reservations[i];
-                        var dateStart = new Date(res.dateStart);
-                        var dateEnd = new Date(res.dateEnd);
-                        event = {
-                            //format("Y-m-d h:i:s"),
-                            id: res.id,
-                            text: res.description,
-                            start_date: new Date(dateStart.getFullYear(), dateStart.getMonth(), dateStart.getDate(), dateStart.getHours(),
-                                dateStart.getMinutes(), dateStart.getSeconds()),
-                            end_date: new Date(dateEnd.getFullYear(), dateEnd.getMonth(), dateEnd.getDate(), dateEnd.getHours(),
-                                dateEnd.getMinutes(), dateEnd.getSeconds()),
-                            login: res.loginUser,
-                            resource: res.referenceResource,
-                            reference: res.reference
+                    $scope.reservationForResource = data;
+                    if (data.length !== 0) {
+                        for (var i = 0; i < $scope.reservations.length; i++) {
+                            var res = $scope.reservations[i];
+                            var dateStart = new Date(res.dateStart);
+                            var dateEnd = new Date(res.dateEnd);
+                            event = {
+                                //format("Y-m-d h:i:s"),
+                                id: res.id,
+                                text: res.description,
+                                start_date: new Date(dateStart.getFullYear(), dateStart.getMonth(), dateStart.getDate(), dateStart.getHours(),
+                                    dateStart.getMinutes(), dateStart.getSeconds()),
+                                end_date: new Date(dateEnd.getFullYear(), dateEnd.getMonth(), dateEnd.getDate(), dateEnd.getHours(),
+                                    dateEnd.getMinutes(), dateEnd.getSeconds()),
+                                login: res.loginUser,
+                                resource: res.referenceResource,
+                                reference: res.reference
+
+                            }
+                            $scope.events.push(event);
 
                         }
-                        $scope.events.push(event);
-
+                        $scope.eventsResourceRelatedToResource = true;
                     }
-                    console.log('events is ' + JSON.stringify($scope.events));
-                    $scope.eventsResourceRelatedToResource = true;
+
 
                 }, function (error) {
                     console.log("there is an error " + error);
@@ -185,6 +174,47 @@ angular.module('jhipsterApp')
             );
 
         }
+
+        /**
+         * check if the curent user is admin.
+         */
+        $scope.isAdmin = function () {
+            var roles = $scope.account.roles;
+            if (angular.isDefined(roles)) {
+                for (var i = 0; i < roles.length; i++) {
+                    if (roles[i].indexOf("Admins") > -1) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+
+        };
+
+        /**
+         * check if the curent user is the creator of the event.
+         */
+        $scope.isUserOwner = function () {
+            var userName = $scope.account.lastName;
+            var eventUser = $scope.reservationInfo.loginUser;
+            if (angular.isDefined(userName) && angular.isDefined(eventUser)) {
+
+                if (eventUser.indexOf(userName) > -1) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+
+            }
+            else {
+
+                return false;
+            }
+
+
+        };
 
 
         //======================================================================================================
@@ -243,17 +273,17 @@ angular.module('jhipsterApp').directive('dhxScheduler', function () {
             $scope.scheduler.date = $scope.scheduler.date || new Date();
 
             scheduler.attachEvent("onDblClick", function (id, e) {
+                console.log('double clik ') ;
                 var ev = scheduler.getEvent(id);
-                console.log('clicked here   ' + Principal.isAuthenticated);
                 if (!isAuthenticated) {
                     $scope.event = ev;
-                   $scope.reservationInfo.dateStart = ev.start_date.format("Y-m-d h:i:s") ;
-                    $scope.reservationInfo.dateEnd = ev.end_date.format("Y-m-d h:i:s") ;
-                    $scope.reservationInfo.reference = ev.reference ;
-                    $scope.reservationInfo.id = ev.id ;
-                    $scope.reservationInfo.referenceResource = ev.resource ;
-                    $scope.reservationInfo.loginUser = ev.login ;
-                    $scope.reservationInfo.description = ev.text ;
+                    $scope.reservationInfo.dateStart = ev.start_date.format("Y-m-d h:i:s");
+                    $scope.reservationInfo.dateEnd = ev.end_date.format("Y-m-d h:i:s");
+                    $scope.reservationInfo.reference = ev.reference;
+                    $scope.reservationInfo.id = ev.id;
+                    $scope.reservationInfo.referenceResource = ev.resource;
+                    $scope.reservationInfo.loginUser = ev.login;
+                    $scope.reservationInfo.description = ev.text;
                     $scope.$apply();
                     $scope.$apply(" showModalUpdate = !showModalUpdate");
                 }
@@ -264,7 +294,6 @@ angular.module('jhipsterApp').directive('dhxScheduler', function () {
 
             scheduler.showLightbox = function (id) {
                 var ev = scheduler.getEvent(id);
-                console.log("custom  form event " + ev);
             };
 
 
@@ -293,12 +322,15 @@ angular.module('jhipsterApp').directive('dhxScheduler', function () {
             //styling for dhtmlx scheduler
             $element.addClass("dhx_cal_container");
             //init scheduler
-            scheduler.config.dblclick_create = false;
+            scheduler.config.dblclick_create = true;
             scheduler.config.drag_create = false;
             scheduler.config.drag_move = true;
             scheduler.config.readonly = false;
             scheduler.config.touch = true;
-
+            scheduler.templates.event_class = function (start, end, event) {
+                if (event.type == 'manager') return "manager_event";
+                return "employee_event";
+            };
 
             //init scheduler
             scheduler.init($element[0], $scope.scheduler.mode, $scope.scheduler.date);
